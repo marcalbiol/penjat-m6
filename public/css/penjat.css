@@ -210,3 +210,21 @@ div.letters_container span {
         font-size: 5vw;
     }
 }
+
+#toast-container {
+    z-index: 9999;
+}
+
+#toast {
+    animation: slide-in .3s ease-in-out forwards;
+}
+
+@keyframes slide-in {
+    from {
+        transform: translateX(100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+

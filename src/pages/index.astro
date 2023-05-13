@@ -1,6 +1,7 @@
 ---
 import Buttons from '../components/Buttons.astro';
 import Form from '../components/Form.astro';
+import Toastr from '../components/Toastr.astro'
 ---
 <!DOCTYPE html>
 <html lang="ca" dir="ltr">
@@ -13,6 +14,10 @@ import Form from '../components/Form.astro';
 </head>
 <body>
 
+<div id="currentPlayer"></div>
+
+
+<Toastr></Toastr>
 <Form></Form>
 <div id="maincontainer" class="main_container" style="display: none">
 	<div class="scaffold_container">
