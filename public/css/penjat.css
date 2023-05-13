@@ -20,6 +20,7 @@ div.main_container {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    margin-top: 2rem;
 }
 
 div.scaffold_container {
@@ -63,8 +64,6 @@ div.buttons_container {
 
 .new_game {
     background-color: #50A7C2;
-    height: 17%;
-    cursor: pointer;
 }
 
 .clue {
@@ -162,18 +161,14 @@ div.letters_container span {
 @media only screen and (orientation: landscape) {
     div.main_container {
         width: 90vh;
-        height: 90vh;
+        height: 75vh;
     }
 
     .button {
         font-size: 3vh;
-        line-height: 3vh;
+        line-height: 5vh;
     }
 
-    .new_game:hover {
-        font-size: 4vh;
-        line-height: 4vh;
-    }
 
     .clue {
         font-size: 20vh;

@@ -14,7 +14,6 @@ const maincontainer = document.getElementById('maincontainer')
 const registerGame = document.getElementById('registerGame');
 const joinGame = document.getElementById('joinGame');
 const switchGame = document.getElementById('switch');
-const player = document.getElementById('currentPlayer')
 const toast = document.getElementById('toast-container')
 
 switchGame.addEventListener('click', () => resetForm())
@@ -24,9 +23,7 @@ joinGame.addEventListener('submit', (event) => {
     maincontainer.style.display = 'none';
     const gameName = document.getElementById('gamename').value;
     joinGame.style.display = 'none'
-    player.innerText = whoIs.P2
     checkCurrentGameStatus(gameName, whoIs.P2);
-
 })
 
 registerGame.addEventListener('submit', (event) => {
@@ -40,7 +37,6 @@ registerGame.addEventListener('submit', (event) => {
         }), selector: response => response.json()
     }).subscribe((res) => {
         registerGame.style.display = 'none'
-        player.innerText = whoIs.P1
         checkCurrentGameStatus(gameName, whoIs.P1)
     })
 });
@@ -69,14 +65,36 @@ function checkCurrentGameStatus(gameName, whoIs) {
             toast.style.display = 'block'
         } else {
             toast.style.display = 'none'
-            whoCanPlay();
+            whoCanPlay(res);
         }
+
+        if (res.gameInfo.livesP1 === 0 && res.gameInfo.livesP2 === 0) {
+            loMessage();
+            return;
+        }
+
+        if (res.gameInfo.wordCompleted.indexOf('_') === -1) {
+            if (currentPlayer !== whoIs) {
+                document.getElementById("info").style.display = "block";
+                document.getElementById("game_success").style.display = "block";
+            } else {
+                document.getElementById("info").style.display = "block";
+                document.getElementById("game_fail").style.display = "block";
+            }
+        }
+
     });
 
-    function whoCanPlay() {
+    function whoCanPlay(res) {
+        const currentPlayerLives = currentPlayer === 'P1' ? res.gameInfo.livesP1 : res.gameInfo.livesP2;
+        if (currentPlayerLives === 0) {
+            document.getElementById("info").style.display = "block"
+            document.getElementById("game_fail").style.display = "block"
+            return;
+        }
+
         function onKeyDown(event) {
             let key = event.key
-            console.log(key)
             const validar = /^[a-zA-Z]/
             if (validar.test(key)) {
                 guessWord(gameName, key, currentPlayer)
@@ -90,36 +108,8 @@ function checkCurrentGameStatus(gameName, whoIs) {
     function userInfo() {
         let newGame = document.getElementById("new_game")
         newGame.innerHTML = `Turno de ${currentPlayer}`
-
-        newGame.addEventListener("click", () => {
-            location.reload()
-        })
     }
 }
-
-
-    function checkLives(vidas) {
-        let monster = 5 - Math.min(5, vidas);
-
-        document.getElementById("lives").innerHTML = `${vidas} LIVES LEFT`;
-        const image = document.getElementById("monster");
-        if (vidas < 0 ? image.src = `img/monster${5}.png` : image.src = `img/monster${monster}.png`)
-
-            if (vidas < 1) {
-                document.getElementById("lives").innerHTML = `${0} LIVES LEFT`;
-                document.getElementById("info").style.display = "block"
-                document.getElementById("game_fail").style.display = "block"
-
-                /*   buttonContinue.addEventListener("click", () => {
-                       document.getElementById("info").style.display = "none";
-                       document.getElementById("game_fail").style.display = "none";
-                       setTimeout(function () {
-                           window.location.reload();
-                       }, 2000);
-                   })*/
-            }
-    }
-
 
 function guessWord(gameName, word, player) {
     fromFetch(URI, {
@@ -129,20 +119,20 @@ function guessWord(gameName, word, player) {
     }).subscribe()
 }
 
-/**
- * mensaje cuando gana
- */
-function gameEnd() {
+function loMessage() {
+    document.getElementById("lives").innerHTML = `${0} LIVES LEFT`;
     document.getElementById("info").style.display = "block"
-    document.getElementById("game_success").style.display = "block"
-    /* buttonContinue.addEventListener("click", () => {
-         document.getElementById("info").style.display = "none";
-         document.getElementById("game_fail").style.display = "none";
-         setTimeout(function () {
-             window.location.reload();
-         }, 2000);
-     })*/
+    document.getElementById("game_fail").style.display = "block"
 }
+
+function checkLives(vidas) {
+    let monster = 5 - Math.min(5, vidas);
+
+    document.getElementById("lives").innerHTML = `${vidas} LIVES LEFT`;
+    const image = document.getElementById("monster");
+    vidas < 0 ? image.src = `img/monster${5}.png` : image.src = `img/monster${monster}.png`
+}
+
 
 function resetForm() {
     if (registerGame.style.display === 'none') {

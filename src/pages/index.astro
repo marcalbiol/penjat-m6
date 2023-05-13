@@ -2,6 +2,7 @@
 import Buttons from '../components/Buttons.astro';
 import Form from '../components/Form.astro';
 import Toastr from '../components/Toastr.astro'
+import Navbar from '../components/Navbar.astro';
 ---
 <!DOCTYPE html>
 <html lang="ca" dir="ltr">
@@ -14,11 +15,9 @@ import Toastr from '../components/Toastr.astro'
 </head>
 <body>
 
-<div id="currentPlayer"></div>
-
-
-<Toastr></Toastr>
+<Navbar></Navbar>
 <Form></Form>
+<Toastr></Toastr>
 <div id="maincontainer" class="main_container" style="display: none">
 	<div class="scaffold_container">
 		<img src="/img/monster0.png" alt="monstre penjat" id="monster" class="monster">
@@ -32,7 +31,7 @@ import Toastr from '../components/Toastr.astro'
                     <span>
                         <span id="welcome" class="info_msg">No permetis que la massa enfurismada pengi al monstre per no saber vocabulari. Ajuda'l a salvar-se!</span>
                         <span id="game_success" class="info_msg">Has salvat al monstre. Enhorabona!</span>
-                        <span id="game_fail" class="info_msg">No has salvat al monstre. Llàstima!</span>
+                        <span id="game_fail" class="info_msg">Has perdido</span>
                         <button id="btn_ok" class="btn">Continuar</button>
                     </span>
 		</div>
